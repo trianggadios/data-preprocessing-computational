@@ -19,11 +19,17 @@ def dynamic_switcher(data, key):
 
 
 def run():
+    slang_dict = {
+        k: v
+
+        for k, v in pandas.read_csv(
+            "./daftar-slang-bahasa-indonesia.csv", header=None
+        ).to_numpy()
+    }
+    dataset_qa = pandas.read_csv("./qa.csv", usecols=["question", "answer"])
     start = time.time()
-    slang_dict = {k: v for k, v in pandas.read_csv('./daftar-slang-bahasa-indonesia.csv', header=None).to_numpy()}
-    dataset_qa = pandas.read_csv('./qa.csv', usecols=['question', 'answer'])
-    for index, row in dataset_qa.iterrows():
-        _ = conv_slang(row['question'], slang_dict)
-        _ = conv_slang(row['answer'], slang_dict)
-    with open(f'algo2_time.txt', 'w') as f:
-        f.write(f'{time.time() - start}')
+    for _, row in dataset_qa.iterrows():
+        _ = conv_slang(row["question"], slang_dict)
+        _ = conv_slang(row["answer"], slang_dict)
+    with open(f"algo2_time.txt", "w") as f:
+        f.write(f"{time.time() - start}")
